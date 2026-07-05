@@ -67,27 +67,13 @@ from source, keep using this version unless you've re-verified another one.
 If `PadOfTime.log` (`EnableLog=1`) shows `SDL_NumJoysticks()=1` but with a
 generic name (`"HID-compliant game controller"`) instead of your controller's
 real name, and `isGC=0` - the SDL2 HIDAPI backend never got to claim the
-device. On Windows, background controller-support hooks from other software
-can hold the device's HID handle exclusively before SDL gets a chance,
-even when that software's input remapping is disabled for this specific
-game. Confirmed cause for a Nintendo Switch Pro Controller: two *separate*
-Steam settings, unrelated to per-game Steam Input:
-
-- Steam → Settings → Controller → Advanced Settings → **"Guide button
-  focuses Steam"**
-- Steam → Settings → Controller → Advanced Settings → **"Enable Guide
-  button combos for controllers"**
-
-Both keep Steam listening to the controller's raw HID stream in the
-background (to catch the Guide/Home button) regardless of any per-game or
-per-controller-type Steam Input toggle. Turn both off, fully restart the
-Steam client (via the tray icon, not just closing the window), then launch
-the game.
-
-If that still doesn't work, check for other background controller software
-(DS4Windows, BetterJoy, Joy2Key, vendor driver utilities) holding the
-device, and consider `AllowRawFallback=1` in the ini as a last resort - it
-reads the pad as a raw joystick with a blind numeric axis/button guess
+device. This is exactly what the bundled `SDL2.dll` (2.32.8.0) fixes - an
+older SDL2 build is the most common cause. If you're already on the
+bundled version and still hit this, check for background controller
+software (Steam's controller support, DS4Windows, BetterJoy, Joy2Key,
+vendor driver utilities) that might be holding the device's HID handle
+exclusively, and consider `AllowRawFallback=1` in the ini as a last resort -
+it reads the pad as a raw joystick with a blind numeric axis/button guess
 instead of a real mapping, so expect to retune `[Buttons]` by watching the
 `[raw]` log lines while pressing each button individually.
 
