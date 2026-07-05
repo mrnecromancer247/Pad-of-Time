@@ -88,6 +88,70 @@ instead of a real mapping, so expect to retune `[Buttons]` by watching the
   synthesized - if the game ever reads the pad that way instead of
   `GetDeviceState`, that path still needs filling in.
 
+## PadOfTime.ini reference
+
+All settings live next to `dinput8.dll`, in `PadOfTime.ini`. Every value has
+a working default, so a missing file or a missing key just falls back to
+it - you only need to add lines for what you actually want to change.
+
+### `[General]`
+
+| Key | Default | What it does |
+|---|---|---|
+| `EnableLog` | `0` | Write `PadOfTime.log` next to the game exe. Turn on only when troubleshooting - it logs every DirectInput call the game makes plus a live dump of the pad state. |
+| `Passthrough` | `0` | Diagnostic mode: don't synthesize anything, just pass the real device's native state through untouched and log the raw buffer. Needs `EnableLog=1` too. Useful to check whether the game's own DirectInput handling is already usable before deciding anything needs fixing. |
+| `ControllerIndex` | `-1` | Which controller to use when more than one is connected. `-1` = auto (picks whichever pad is actually sending input). Otherwise, the SDL device index (`0`, `1`, ...). |
+| `AllowRawFallback` | `0` | Last-resort fallback: if a pad never gets a proper `SDL_GameController` mapping, read it as a raw joystick with a blind numeric axis/button guess instead. See the Troubleshooting section - this masks the real problem rather than fixing it, so try everything else first. |
+
+### `[Sensitivity]`
+
+| Key | Default | What it does |
+|---|---|---|
+| `MoveDeadzone` | `0.18` | Radial deadzone on the left stick (movement), `0.0`-`1.0` as a fraction of full stick travel. Raise it if the Prince drifts/creeps with the stick centered. |
+| `MoveMaxStickRange` | `100` | Outer calibration, as a percent. If your stick is worn or loose and never *quite* reaches full physical deflection, lower this (e.g. `90`) so that 90% deflection already reads as 100%. `100` = off. |
+| `CameraSensitivity` | `65` | Camera speed as a percent; `50` is the formula's baseline (1.0x). The shipped default (`65`) is a bit faster than baseline. No upper limit. |
+| `CameraDeadzone` | `0.20` | Radial deadzone on the right stick (camera), same idea as `MoveDeadzone`. |
+| `CameraMaxStickRange` | `100` | Outer calibration for the camera stick, same idea as `MoveMaxStickRange`. |
+| `TriggerThreshold` | `0.20` | Reserved - only used if triggers ever get read as digital buttons rather than an analog axis. |
+| `AxisSnapRatio` | `0.2` | Cross-axis suppression: if one axis' magnitude is below this fraction of the other's, snap it to zero. Helps the game's Controls binding screen read a clean single axis instead of latching onto stick noise on the "other" axis. Hall-effect sticks have almost no deadzone but do emit some noise at center - counterintuitively, a *higher* value here suppresses that better than a lower one. `0` disables it. |
+
+### `[Axes]`
+
+| Key | Default | What it does |
+|---|---|---|
+| `InvertMoveY` | `0` | Invert the left stick's vertical axis. |
+| `InvertCameraY` | `0` | Invert the right stick's vertical axis (camera up/down). |
+| `InvertCameraX` | `0` | Invert the right stick's horizontal axis (camera left/right). |
+| `SwapTriggers` | `0` | `0`: RT drives Z(+), LT drives Z(-). `1`: swapped. |
+| `CameraOnZRz` | `0` | `0` (default): camera reads on Rx/Ry, triggers read on Z. `1`: camera reads on Z/Rz, triggers read on Rx instead - try this if the camera stick behaves wrong. |
+
+### `[Spoof]`
+
+| Key | Default | What it does |
+|---|---|---|
+| `SpoofVidPid` | `0` | Present a consistent controller VID/PID to the game regardless of which real pad is plugged in, in case the game's own gamepad config keys anything off device identity. Off by default. |
+| `VID` | `0x045e` | Vendor ID to spoof (default: Microsoft). Only used if `SpoofVidPid=1`. |
+| `PID` | `0x0007` | Product ID to spoof. Only used if `SpoofVidPid=1`. |
+
+### `[Buttons]`
+
+`rgbButtons` index for each named SDL button. `-1` = unmapped. Defaults are
+confirmed against the game's own Controls → Gamepad binding screen - see
+the Quick Start table above for what each one does in-game.
+
+| Key | Default | In-game action (see Quick Start table) |
+|---|---|---|
+| `A` | `0` | Jump |
+| `B` | `1` | Cancel |
+| `X` | `2` | Sword Attack |
+| `Y` | `3` | Use Dagger |
+| `LB` | `4` | Rewind |
+| `RB` | `5` | Special action |
+| `Back` | `6` | - |
+| `Start` | `7` | - |
+| `LS` | `8` | - |
+| `RS` | `9` | Reset Camera |
+
 ## Building from source
 
 **On Windows (primary path, matches Pad-Within):**

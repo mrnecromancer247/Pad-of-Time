@@ -32,11 +32,11 @@ struct Config
     // Cross-axis suppression, same idea as Pad-Within's AxisSnapRatio: if SoT's
     // Controls-menu axis-binding screen has the same "grabs the first axis
     // past a tiny threshold" bug that Warrior Within had, this is the knob to
-    // fix it. Keep this LOW (or 0) on modern Hall-effect sticks - they have
-    // almost no mechanical cross-axis leakage to begin with, and a value
-    // tuned for old potentiometer sticks (which do leak) makes it needlessly
-    // hard to bind a diagonal-adjacent axis on a clean stick.
-    float axisSnapRatio    = 0.05f;
+    // fix it. Hall-effect sticks have almost no deadzone, but they still emit
+    // a bit of low-level noise at center - too LOW a ratio doesn't suppress
+    // that noise enough for the binding screen to read a clean single axis,
+    // so a higher value than you'd expect works better here, not lower.
+    float axisSnapRatio    = 0.2f;
 
     // --- axis inversion ---
     bool invertMoveY   = false;
