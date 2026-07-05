@@ -12,6 +12,14 @@ methods on those real objects in-place. Keyboard and mouse are never touched.
 
 ## Quick Start
 
+Verified working on both the **Steam** and **GOG** releases. This proxy
+never patches the game's own executable or hardcodes any addresses inside
+it - it side-loads as `dinput8.dll` next to the exe and intercepts
+DirectInput API calls, so it isn't tied to a specific build or storefront
+in the first place. (In fact, the Steam and GOG executables tested here
+turned out to be byte-identical - same size, same PE timestamp, same
+imports - so there was nothing storefront-specific to account for.)
+
 1. Download the latest Pad-of-Time release from GitHub.
 2. Extract the files into the folder where the game's exe (`POP.exe`) lives.
 3. Turn off Steam Input for this game (Steam Input remaps your controller
