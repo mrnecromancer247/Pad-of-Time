@@ -25,18 +25,19 @@ struct Config
 
     // --- sensitivity / feel ---
     int   cameraSensitivity = 65;    // percent; 50 = 1.0x multiplier (baseline)
-    float moveDeadzone     = 0.18f;  // radial deadzone, left stick, 0..1
+    float moveDeadzone     = 0.20f;  // radial deadzone, left stick, 0..1
     float cameraDeadzone   = 0.20f;  // radial deadzone, right stick, 0..1
-    int   moveMaxRange     = 100;    // outer calibration %, worn/loose sticks
+    int   moveMaxRange     = 95;     // outer calibration %, worn/loose sticks
     int   cameraMaxRange   = 100;
     float triggerThreshold = 0.20f;  // only used if triggers act as buttons
-    // Cross-axis suppression, same idea as Pad-Within's AxisSnapRatio: if SoT's
-    // Controls-menu axis-binding screen has the same "grabs the first axis
-    // past a tiny threshold" bug that Warrior Within had, this is the knob to
-    // fix it. Hall-effect sticks have almost no deadzone, but they still emit
-    // a bit of low-level noise at center - too LOW a ratio doesn't suppress
-    // that noise enough for the binding screen to read a clean single axis,
-    // so a higher value than you'd expect works better here, not lower.
+    // Cross-axis suppression: if one axis' magnitude is below this fraction of
+    // the other's, snap it to zero. Helps a controller-binding screen tell axes
+    // apart when a stick leaks a bit of the "other" axis while pushing what
+    // should be a pure vertical/horizontal direction. Hall-effect sticks have
+    // almost no deadzone, but they still emit a bit of low-level noise at
+    // center - too LOW a ratio doesn't suppress that noise enough for the
+    // binding screen to read a clean single axis, so a higher value than
+    // you'd expect works better here, not lower.
     float axisSnapRatio    = 0.2f;
 
     // --- axis inversion ---

@@ -120,8 +120,8 @@ it - you only need to add lines for what you actually want to change.
 
 | Key | Default | What it does |
 |---|---|---|
-| `MoveDeadzone` | `0.18` | Radial deadzone on the left stick (movement), `0.0`-`1.0` as a fraction of full stick travel. Raise it if the Prince drifts/creeps with the stick centered. |
-| `MoveMaxStickRange` | `100` | Outer calibration, as a percent. If your stick is worn or loose and never *quite* reaches full physical deflection, lower this (e.g. `90`) so that 90% deflection already reads as 100%. `100` = off. |
+| `MoveDeadzone` | `0.20` | Radial deadzone on the left stick (movement), `0.0`-`1.0` as a fraction of full stick travel. Raise it if the Prince drifts/creeps with the stick centered. |
+| `MoveMaxStickRange` | `95` | Outer calibration, as a percent. If your stick is worn or loose and never *quite* reaches full physical deflection, lower this (e.g. `90`) so that 90% deflection already reads as 100%. `100` = off. |
 | `CameraSensitivity` | `65` | Camera speed as a percent; `50` is the formula's baseline (1.0x). The shipped default (`65`) is a bit faster than baseline. No upper limit. |
 | `CameraDeadzone` | `0.20` | Radial deadzone on the right stick (camera), same idea as `MoveDeadzone`. |
 | `CameraMaxStickRange` | `100` | Outer calibration for the camera stick, same idea as `MoveMaxStickRange`. |
